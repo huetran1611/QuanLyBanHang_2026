@@ -1,0 +1,11 @@
+C:\Users\huett\source\repos\QuanLyBanHang\bin\Debug\QuanLyBanHang.exe.config
+C:\Users\huett\source\repos\QuanLyBanHang\bin\Debug\QuanLyBanHang.exe
+C:\Users\huett\source\repos\QuanLyBanHang\bin\Debug\QuanLyBanHang.pdb
+C:\Users\huett\source\repos\QuanLyBanHang\obj\Debug\QuanLyBanHang.csproj.AssemblyReference.cache
+C:\Users\huett\source\repos\QuanLyBanHang\obj\Debug\QuanLyBanHang.frmMain.resources
+C:\Users\huett\source\repos\QuanLyBanHang\obj\Debug\QuanLyBanHang.Properties.Resources.resources
+C:\Users\huett\source\repos\QuanLyBanHang\obj\Debug\QuanLyBanHang.csproj.GenerateResource.cache
+C:\Users\huett\source\repos\QuanLyBanHang\obj\Debug\QuanLyBanHang.csproj.CoreCompileInputs.cache
+C:\Users\huett\source\repos\QuanLyBanHang\obj\Debug\QuanLyBanHang.exe
+C:\Users\huett\source\repos\QuanLyBanHang\obj\Debug\QuanLyBanHang.pdb
+C:\Users\huett\source\repos\QuanLyBanHang\obj\Debug\QuanLyBanHang.frmHang.resources
