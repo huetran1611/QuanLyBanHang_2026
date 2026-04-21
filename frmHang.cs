@@ -23,6 +23,12 @@ namespace QuanLyBanHang
         {
             fillDataToCombo();
             fillDataToGridView();
+            btnLuu.Enabled = false;
+            btnBoQua.Enabled = false;
+            btnLuu.Enabled = false;
+            txtMaHang.Enabled = false;
+            txtTenHang.Enabled = false;
+            // cac texbox khac cung bi visible
         }
 
         private void fillDataToCombo()
@@ -54,8 +60,11 @@ namespace QuanLyBanHang
             txtDonGiaBan.Text = dataGridViewHang.CurrentRow.Cells["Dongianhap"].Value.ToString();
             txtDonGiaBan.Text = dataGridViewHang.CurrentRow.Cells["Dongiaban"].Value.ToString();
             txtAnh.Text = dataGridViewHang.CurrentRow.Cells["Anh"].Value.ToString();
-            //MessageBox.Show(txtAnh.Text.Trim());
-            pictureBox.Image = Image.FromFile (txtAnh.Text);
+            if (txtTenHang.Text.Trim().Length > 0)
+            {
+               // MessageBox.Show(txtAnh.Text.Trim());
+              //  pictureBox.Image = Image.FromFile(txtAnh.Text);
+            }
             txtGhiChu.Text = dataGridViewHang.CurrentRow.Cells["Ghichu"].Value.ToString();
             btnSua.Enabled = true;
             btnXoa.Enabled = true;
@@ -69,9 +78,113 @@ namespace QuanLyBanHang
             SqlDataReader TenChatlieu = mycmd.ExecuteReader();
             while (TenChatlieu.Read())
             {
-                return TenChatlieu.GetValue(0).ToString();
+                string ten_chat_lieu = TenChatlieu.GetValue(0).ToString();
+                TenChatlieu.Close();
+                return ten_chat_lieu;
             }
-            { return ""; }
+            {
+                TenChatlieu.Close() ;
+                return ""; }
         }
+
+
+        private void btnThem_Click(object sender, EventArgs e)
+        {
+            txtMaHang.Enabled = true;
+            txtTenHang.Enabled = true;
+            txtDonGiaBan.Enabled = true;
+            txtGhiChu.Enabled = true;
+            txtDonGiaNhap.Enabled = true;
+            btnLuu.Enabled = true;
+        }
+        private void btnLuu_Click(object sender, EventArgs e)
+        {
+            // check xem du duwx lieu ko
+            if (!CheckInputData())
+            {
+                return;
+            }
+            else 
+            {
+                // check Ma Hang co bi trung hay khong
+                if (checkKeyExit())
+                    return;
+                else { 
+                    // insert du lieu vao db
+                    string sql = "Insert into tblHang (Mahang, tenHang, MaChatLieu, SoLuong, DonGiaNhap, DonGiaBan)" +
+                        "values('" + txtMaHang.Text + "' , N'"+ txtTenHang.Text + "', " +
+                        "       '"+ cmbChatLieu.SelectedValue.ToString() + "', "+
+                        txtSoLuong.Text + ", " + txtDonGiaNhap.Text + ", "+ txtDonGiaBan.Text + ")";
+                    MessageBox.Show(sql);
+                    try
+                    {
+                        SqlCommand mycmd = new SqlCommand(sql, DAO.Connection);
+                        mycmd.ExecuteNonQuery();
+                        MessageBox.Show("Luu du lieu thanh cong");
+                        fillDataToGridView();
+                    }
+                    catch (Exception ex) { 
+                        MessageBox.Show(ex.Message);
+                    }
+                
+                }
+            }
+        }
+
+        private bool CheckInputData()
+        {
+            bool result = true;
+            // check ma hang hop le ko
+            if (txtMaHang.Text.Trim() == "")
+            {
+                MessageBox.Show("Ban phai nhap ma hang");
+                txtMaHang.Focus();
+                result = false;
+                return result;
+            }
+            if (txtTenHang.Text.Trim() == "")
+            {
+                MessageBox.Show("Ban phai nhap ten hang");
+                txtTenHang.Focus();
+                result = false;
+                return result;
+            }
+            
+            if (txtSoLuong.Text.Trim() == "")
+            {
+                MessageBox.Show("Ban Phai nhap so luong");
+                txtSoLuong.Focus(); result = false; 
+                return result;
+            }
+            try
+            {
+                int soluong = Convert.ToInt32(txtSoLuong.Text);
+            }
+            catch (Exception ex) { 
+                MessageBox.Show("Ban nhap so luong khong phai so nguyen");
+                txtSoLuong.Focus();
+                result = false;
+                return result;
+            }
+            return result;
+        }
+
+        private bool checkKeyExit() {
+            string sql = "select count (*) from tblHang where mahang = @maHang";
+            SqlCommand cmd = new SqlCommand(sql,DAO.Connection);
+
+            cmd.Parameters.Add(new SqlParameter("@mahang", txtMaHang.Text.Trim()));
+            int result = Convert.ToInt16(cmd.ExecuteScalar().ToString());
+            if (result == 0) {
+                return false;
+            }
+            else
+            {
+                MessageBox.Show("Ma hang da ton tai");
+                return true;
+            }
+
+        }
+    
     }
 }
